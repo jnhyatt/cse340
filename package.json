@@ -1,0 +1,20 @@
+{
+  "name": "cse340",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/jnhyatt/cse340#readme",
+  "bugs": {
+    "url": "https://github.com/jnhyatt/cse340/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jnhyatt/cse340.git"
+  },
+  "license": "ISC",
+  "author": "Josh Hyatt",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
