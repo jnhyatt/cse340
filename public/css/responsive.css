@@ -1,0 +1,40 @@
+@media (max-width: 600px) {
+    nav {
+        flex-direction: column;
+    }
+
+    nav .nav-top {
+        width: 100%;
+        justify-content: center;
+        position: relative;
+    }
+
+    nav .brand {
+        text-align: center;
+    }
+
+    nav .hamburger {
+        display: flex;
+        position: absolute;
+        right: 0;
+    }
+
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 0;
+        max-height: 0;
+        overflow: hidden;
+        width: 100%;
+        transition: max-height 0.3s ease;
+    }
+
+    nav ul.open {
+        max-height: 300px;
+    }
+
+    nav ul li {
+        padding: 0.6rem 0;
+    }
+}

@@ -8,13 +8,24 @@
         <%= title %>
     </title>
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/responsive.css">
+    <script src="/js/nav.js" defer></script>
 </head>
 
 <body>
     <nav>
-        <ul>
+        <div class="nav-top">
+            <a href="/" class="brand">CSE 340 Service Network</a>
+            <button id="hamburger" class="hamburger" aria-label="Toggle navigation" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+        <ul id="nav-links">
             <li><a href="/">Home</a></li>
             <li><a href="/organizations">Organizations</a></li>
             <li><a href="/projects">Projects</a></li>
+            <li><a href="/categories">Categories</a></li>
         </ul>
     </nav>
