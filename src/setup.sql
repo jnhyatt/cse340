@@ -144,3 +144,59 @@ values (
         '150 W 100 S, Bountiful, UT',
         '2026-10-31 10:00:00-06'
     );
+
+create table category (
+    category_id serial primary key,
+    name varchar(100) not null unique
+);
+insert into category (name)
+values ('Construction & Repair'),
+    ('Environmental & Gardening'),
+    ('Food Security'),
+    ('Community Outreach'),
+    ('Youth & Education');
+
+create table project_categories (
+    service_project_id integer not null references service_project (service_project_id) on delete cascade,
+    category_id integer not null references category (category_id) on delete cascade,
+    primary key (service_project_id, category_id)
+);
+insert into project_categories (service_project_id, category_id)
+values
+    -- Community Housing Build Day
+    (1, 1),
+    -- Playground Renovation Project
+    (2, 1),
+    (2, 5),
+    -- Accessible Ramp Building Initiative
+    (3, 1),
+    (3, 4),
+    -- Neighborhood Fence Repair Day
+    (4, 1),
+    -- Emergency Shelter Expansion
+    (5, 1),
+    (5, 4),
+    -- Neighborhood Garden Planting
+    (6, 2),
+    -- Community Orchard Pruning
+    (7, 2),
+    -- Rooftop Garden Setup
+    (8, 2),
+    -- Fall Harvest Festival Prep
+    (9, 2),
+    (9, 4),
+    -- School Garden Build
+    (10, 2),
+    (10, 5),
+    -- Food Pantry Sorting Drive
+    (11, 3),
+    -- Winter Coat Drive Distribution
+    (12, 4),
+    -- Senior Center Meal Delivery
+    (13, 3),
+    (13, 4),
+    -- Back-to-School Supply Packing
+    (14, 5),
+    -- Holiday Toy Drive Sorting
+    (15, 4),
+    (15, 5);
