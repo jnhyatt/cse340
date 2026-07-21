@@ -24,15 +24,15 @@ values (
         'hello@unityserve.org',
         'unityserve-logo.png'
     );
-create table service_project (
-    service_project_id serial primary key,
+create table project (
+    project_id serial primary key,
     organization_id integer not null references organization (organization_id),
     title varchar(150) not null,
     description text not null,
     location varchar(255) not null,
     occurs_at timestamptz not null
 );
-insert into service_project (
+insert into project (
         organization_id,
         title,
         description,
@@ -157,11 +157,11 @@ values ('Construction & Repair'),
     ('Youth & Education');
 
 create table project_categories (
-    service_project_id integer not null references service_project (service_project_id) on delete cascade,
+    project_id integer not null references project (project_id) on delete cascade,
     category_id integer not null references category (category_id) on delete cascade,
-    primary key (service_project_id, category_id)
+    primary key (project_id, category_id)
 );
-insert into project_categories (service_project_id, category_id)
+insert into project_categories (project_id, category_id)
 values
     -- Community Housing Build Day
     (1, 1),
