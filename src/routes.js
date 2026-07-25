@@ -3,7 +3,7 @@ import express from 'express';
 import { getHome } from './controllers/index.js';
 import { showOrganizationDetailsPage, showOrganizationsPage } from './controllers/organizations.js';
 import { getProjects, showProjectDetailsPage } from './controllers/projects.js';
-import { getCategories } from './controllers/categories.js';
+import { getCategories, showCategoryDetailsPage } from './controllers/categories.js';
 import { getServerError } from './controllers/errors.js';
 
 const router = express.Router();
@@ -15,5 +15,6 @@ router.get('/categories', getCategories);
 router.get('/test-error', getServerError); // Test route for 500 errors
 router.get('/organization/:id', showOrganizationDetailsPage);
 router.get('/project/:id', showProjectDetailsPage);
+router.get('/category/:id', showCategoryDetailsPage);
 
 export default router;
