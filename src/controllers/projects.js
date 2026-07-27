@@ -11,8 +11,10 @@ const getProjects = async (req, res) => {
 
 const showProjectDetailsPage = async (req, res) => {
     const projectId = req.params.id;
-    const project = await getProjectDetails(projectId);
-    const categories = await getCategoriesByProjectId(projectId);
+    const [project, categories] = await Promise.all([
+        getProjectDetails(projectId),
+        getCategoriesByProjectId(projectId)
+    ]);
     const title = 'Project Details';
 
     res.render('project', { title, project, categories });
