@@ -22,12 +22,13 @@
         <p>Description: <%= project.description %>
         </p>
 
-        <p>Categories:
-            <% categories.forEach(category=> { %>
+        <p>Categories (<a href="/assign-categories/<%= project.project_id %>">Edit</a>):
+            <% categories.forEach((category, index)=> { %>
                 <a href="/category/<%= category.category_id %>">
                     <%= category.name %>
                 </a>
-                <% }) %>
+                <% if (index < categories.length - 1) { %>,<% } %>
+                        <% }) %>
         </p>
     </main>
     <%- include('partials/footer') %>

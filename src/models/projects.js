@@ -1,6 +1,8 @@
-import db from './db.js'
+import db from './db.js';
 
-const getAllProjects = async () => (await db.query(`
+const getAllProjects = async () =>
+    (
+        await db.query(`
         SELECT project.title,
             project.occurs_at,
             organization.name AS organization_name
@@ -8,10 +10,11 @@ const getAllProjects = async () => (await db.query(`
       JOIN public.organization
         ON project.organization_id = organization.organization_id
       ORDER BY project.occurs_at;
-    `)).rows
+    `)
+    ).rows;
 
 const getProjectsByOrganizationId = async (organizationId) => {
-  const query = `
+    const query = `
         SELECT
           project_id,
           organization_id,
@@ -24,14 +27,14 @@ const getProjectsByOrganizationId = async (organizationId) => {
         ORDER BY occurs_at;
       `;
 
-  const queryParams = [organizationId];
-  const result = await db.query(query, queryParams);
+    const queryParams = [organizationId];
+    const result = await db.query(query, queryParams);
 
-  return result.rows;
+    return result.rows;
 };
 
 const getUpcomingProjects = async (numberOfProjects) => {
-  const query = `
+    const query = `
         SELECT
           project.project_id,
           project.title,
@@ -48,14 +51,14 @@ const getUpcomingProjects = async (numberOfProjects) => {
         LIMIT $1;
       `;
 
-  const queryParams = [numberOfProjects];
-  const result = await db.query(query, queryParams);
+    const queryParams = [numberOfProjects];
+    const result = await db.query(query, queryParams);
 
-  return result.rows;
+    return result.rows;
 };
 
 const getProjectsByCategoryId = async (categoryId) => {
-  const query = `
+    const query = `
         SELECT
           project.project_id,
           project.title,
@@ -71,14 +74,14 @@ const getProjectsByCategoryId = async (categoryId) => {
         ORDER BY project.occurs_at;
       `;
 
-  const queryParams = [categoryId];
-  const result = await db.query(query, queryParams);
+    const queryParams = [categoryId];
+    const result = await db.query(query, queryParams);
 
-  return result.rows;
+    return result.rows;
 };
 
 const getProjectDetails = async (id) => {
-  const query = `
+    const query = `
         SELECT
           project.project_id,
           project.title,
@@ -93,10 +96,38 @@ const getProjectDetails = async (id) => {
         WHERE project.project_id = $1;
       `;
 
-  const queryParams = [id];
-  const result = await db.query(query, queryParams);
+    const queryParams = [id];
+    const result = await db.query(query, queryParams);
 
-  return result.rows.length > 0 ? result.rows[0] : null;
+    return result.rows.length > 0 ? result.rows[0] : null;
 };
 
-export { getAllProjects, getProjectsByOrganizationId, getProjectsByCategoryId, getUpcomingProjects, getProjectDetails }
+const createProject = async (title, description, location, occurs_at, organizationId) => {
+    const query = `
+      INSERT INTO project (title, description, location, occurs_at, organization_id)
+      VALUES ($1, $2, $3, $4, $5)
+      RETURNING project_id;
+    `;
+
+    const queryParams = [title, description, location, occurs_at, organizationId];
+    const result = await db.query(query, queryParams);
+
+    if (result.rows.length === 0) {
+        throw new Error('Failed to create project');
+    }
+
+    if (process.env.ENABLE_SQL_LOGGING === 'true') {
+        console.log('Created new project with ID:', result.rows[0].project_id);
+    }
+
+    return result.rows[0].project_id;
+};
+
+export {
+    getAllProjects,
+    getProjectsByOrganizationId,
+    getProjectsByCategoryId,
+    getUpcomingProjects,
+    getProjectDetails,
+    createProject,
+};

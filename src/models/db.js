@@ -14,8 +14,8 @@ import { Pool } from 'pg';
 const pool = new Pool({
     connectionString: process.env.DB_URL,
     ssl: {
-        rejectUnauthorized: false
-    }
+        rejectUnauthorized: false,
+    },
 });
 
 /**
@@ -55,13 +55,13 @@ if (process.env.NODE_ENV === 'development' && process.env.ENABLE_SQL_LOGGING ===
                 console.log('Executed query:', {
                     text: text.replace(/\s+/g, ' ').trim(),
                     duration: `${duration}ms`,
-                    rows: res.rowCount
+                    rows: res.rowCount,
                 });
                 return res;
             } catch (error) {
                 console.error('Error in query:', {
                     text: text.replace(/\s+/g, ' ').trim(),
-                    error: error.message
+                    error: error.message,
                 });
                 throw error;
             }
@@ -69,7 +69,7 @@ if (process.env.NODE_ENV === 'development' && process.env.ENABLE_SQL_LOGGING ===
 
         async close() {
             await pool.end();
-        }
+        },
     };
 } else {
     // In production, export the pool directly without logging overhead

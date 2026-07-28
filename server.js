@@ -1,22 +1,39 @@
 import express from 'express';
+import session from 'express-session';
 import path from 'path';
 import url from 'url';
 
 import router from './src/routes.js';
 import { testConnection } from './src/models/db.js';
+import flash from './src/middleware/flash.js';
 
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || 'production';
 const PORT = process.env.PORT || 3000;
+const SESSION_SECRET = process.env.SESSION_SECRET;
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
 
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'src/views'));
+
+// Set up session management
+app.use(
+    session({
+        secret: SESSION_SECRET,
+        resave: false,
+        saveUninitialized: true,
+        cookie: { maxAge: 60 * 60 * 1000 }, // Session expires after 1 hour of inactivity
+    }),
+);
+
+app.use(flash);
 
 // Middleware to log all incoming requests
 app.use((req, res, next) => {
@@ -55,7 +72,7 @@ app.use((err, req, res, next) => {
     const context = {
         title: status === 404 ? 'Page Not Found' : 'Server Error',
         error: err.message,
-        stack: err.stack
+        stack: err.stack,
     };
 
     // Render the appropriate error template
