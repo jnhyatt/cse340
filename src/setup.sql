@@ -144,7 +144,6 @@ values (
         '150 W 100 S, Bountiful, UT',
         '2026-10-31 10:00:00-06'
     );
-
 create table category (
     category_id serial primary key,
     name varchar(100) not null unique
@@ -155,15 +154,13 @@ values ('Construction & Repair'),
     ('Food Security'),
     ('Community Outreach'),
     ('Youth & Education');
-
 create table project_categories (
     project_id integer not null references project (project_id) on delete cascade,
     category_id integer not null references category (category_id) on delete cascade,
     primary key (project_id, category_id)
 );
 insert into project_categories (project_id, category_id)
-values
-    -- Community Housing Build Day
+values -- Community Housing Build Day
     (1, 1),
     -- Playground Renovation Project
     (2, 1),
@@ -200,3 +197,25 @@ values
     -- Holiday Toy Drive Sorting
     (15, 4),
     (15, 5);
+create table roles (
+    role_id serial primary key,
+    role_name varchar(50) not null unique,
+    role_description text
+);
+insert into roles (role_name, role_description)
+values (
+        'user',
+        'Standard user with basic access'
+    ),
+    (
+        'admin',
+        'Administrator with full system access'
+    );
+create table users (
+    user_id serial primary key,
+    name varchar(100) not null,
+    email varchar(100) not null unique,
+    password_hash varchar(255) not null,
+    role_id integer references roles (role_id),
+    created_at timestamptz default current_timestamp
+);
