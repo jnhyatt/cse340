@@ -31,6 +31,7 @@ import {
     showNewCategoryForm,
 } from './controllers/categories.js';
 import { getServerError } from './controllers/errors.js';
+import { processVolunteerSignup, processVolunteerRemoval } from './controllers/volunteers.js';
 import {
     processLoginForm,
     processLogout,
@@ -52,6 +53,8 @@ router.get('/categories', getCategories);
 router.get('/test-error', getServerError); // Test route for 500 errors
 router.get('/organization/:id', showOrganizationDetailsPage);
 router.get('/project/:id', showProjectDetailsPage);
+router.get('/project/:id/volunteer', requireLogin, processVolunteerSignup);
+router.get('/project/:id/unvolunteer', requireLogin, processVolunteerRemoval);
 router.get('/category/:id', showCategoryDetailsPage);
 router.get('/new-organization', requireRole('admin'), showNewOrganizationForm);
 router.post(

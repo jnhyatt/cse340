@@ -219,3 +219,8 @@ create table users (
     role_id integer references roles (role_id),
     created_at timestamptz default current_timestamp
 );
+create table project_volunteers (
+    project_id integer not null references project (project_id) on delete cascade,
+    user_id integer not null references users (user_id) on delete cascade,
+    primary key (project_id, user_id)
+);

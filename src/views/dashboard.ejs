@@ -15,6 +15,18 @@
             <p><a href="/users">View registered users</a></p>
             <% } %>
 
+                <h2>My Projects</h2>
+                <ul>
+                    <% volunteeredProjects.forEach(project=> { %>
+                        <li>
+                            <a href="/project/<%= project.project_id %>">
+                                <%= project.title %>
+                            </a>
+                            (<a href="/project/<%= project.project_id %>/unvolunteer">Remove</a>)
+                        </li>
+                        <% }) %>
+                </ul>
+
     </main>
 
     <%- include('partials/footer') %>

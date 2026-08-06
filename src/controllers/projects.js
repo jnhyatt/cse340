@@ -6,6 +6,7 @@ import {
 } from '../models/projects.js';
 import { getCategoriesByProjectId } from '../models/categories.js';
 import { getAllOrganizations } from '../models/organization.js';
+import { isUserSignedUpForProject } from '../models/volunteers.js';
 import { body, validationResult } from 'express-validator';
 
 const NUMBER_OF_UPCOMING_PROJECTS = 5;
@@ -24,7 +25,11 @@ const showProjectDetailsPage = async (req, res) => {
     ]);
     const title = 'Project Details';
 
-    res.render('project', { title, project, categories });
+    const isSignedUp = req.session.user
+        ? await isUserSignedUpForProject(req.session.user.user_id, projectId)
+        : false;
+
+    res.render('project', { title, project, categories, isSignedUp });
 };
 
 const showNewProjectForm = async (req, res) => {
